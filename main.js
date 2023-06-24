@@ -1,5 +1,3 @@
-
-
 $.ajax({
     url: "https://api.census.gov/data/timeseries/idb/5year",
     data: {
@@ -30,7 +28,10 @@ $.ajax({
         .text(function (d, i) {
             return d[0]
         })
-
+    let country_select = document.getElementById("country-select")
+    let country_id = country_select.value
+    let county_name = $("#country-select").find('option:selected').text()
+    $("#country-name-div").text(county_name)
 })
 
 
@@ -39,8 +40,6 @@ function draw() {
     let country_id = country_select.value
     let county_name = $("#country-select").find('option:selected').text()
     $("#country-name-div").text(county_name)
-    
-    console.log(county_name)
     
     google.charts.load('current', {'packages': ['corechart']});
     google.charts.setOnLoadCallback(drawGenderBar);
@@ -68,7 +67,6 @@ function draw() {
         $.ajax({
             url: "https://api.census.gov/data/timeseries/idb/5year",
             data: {
-
                 get: "NAME" + url,
                 YR: "2021",
                 FIPS: country_id,
@@ -88,19 +86,40 @@ function draw() {
                 }
                 let options = {
                     title: "Population Distribution",
+                    titleTextStyle: {
+                        color: "white",
+                        fontSize: 30
+                    },
                     animation: {
                         startup: true,
                         duration: 1000,
                         easing: 'out'
                     },
+                    legend: {position: "bottom",
+                        textStyle: {
+                            color: "white"
+                        }
+                    },
+                    backgroundColor: {
+                        fill: "#030303",
+                        fillOpacity: "0"
+                    },
+                    vAxis: {
+                        textStyle: {
+                            color: "white"
+                        }
+                    },
+                    hAxis: {
+                        textStyle: {
+                            color: "white"
+                        }
+                    }
                 }
                 let dataTable = google.visualization.arrayToDataTable(req_data)
 
                 let chart = new google.visualization.ColumnChart(document.getElementById("chart"))
                 chart.draw(dataTable, options)
                 console.log(req_data)
-
-
             }
         })
     }
@@ -121,14 +140,15 @@ function draw() {
                 arr.push(["Male", parseInt(response[1][2])])
                 arr.push(["Female", parseInt(response[1][1])])
 
-
                 let dataTable = google.visualization.arrayToDataTable(arr)
 
                 let options = {
                     title: "PopDist",
                     titleTextStyle: {
+                        color: "white",
                         fontSize: 30
                     },
+                    
                     animation: {
                         startup: true,
                         duration: 1000,
@@ -137,7 +157,15 @@ function draw() {
                     // height: 500,
                     // width: 500,
                     pieHole: 0.7,
-                    legend: {position: "bottom"}
+                    legend: {position: "bottom",
+                        textStyle: {
+                        color: "white"
+                        }
+                    },
+                    backgroundColor: {
+                        fill: "#000000",
+                        fillOpacity: "0"
+                    },
                 }
 
                 let chart2 = new google.visualization.PieChart(document.getElementById("chart2"))

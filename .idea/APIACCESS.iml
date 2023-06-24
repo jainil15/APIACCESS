@@ -13,11 +13,13 @@
     <orderEntry type="library" name="d3.v6" level="application" />
     <orderEntry type="library" name="jquery-3.6.4" level="application" />
     <orderEntry type="library" name="jquery-csv" level="application" />
-    <orderEntry type="library" name="loader" level="application" />
     <orderEntry type="library" name="analytics" level="application" />
     <orderEntry type="library" name="canvasjs" level="application" />
     <orderEntry type="library" name="jquery" level="application" />
-    <orderEntry type="library" name="@types/bootstrap" level="application" />
     <orderEntry type="library" name="bootstrap" level="application" />
+    <orderEntry type="library" name="leaflet" level="application" />
+    <orderEntry type="library" name="@types/bootstrap" level="application" />
+    <orderEntry type="library" name="leaflet-control-geocoder" level="application" />
+    <orderEntry type="library" name="loader" level="application" />
   </component>
 </module>
