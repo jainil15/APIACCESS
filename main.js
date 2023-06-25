@@ -9,23 +9,23 @@ $.ajax({
     let request_data = []
     let country_name = []
     for (const responseData of response) {
-        country_name.push(responseData[0]),
-            request_data.push([responseData[0], responseData[1]])
+        country_name.push(responseData[0])
+        request_data.push([responseData[0], responseData[1]])
     }
     let selection = d3.select("#country-select")
     let option = selection.selectAll("option").data(request_data.slice(1, request_data.length))
         .enter()
         .append("option")
     option
-        .attr("value", function (d, i) {
+        .attr("value", function (d) {
             //console.log(d)
             return d[1]
         })
-        .attr("name", function (d, i) {
+        .attr("name", function (d) {
             //console.log(d)
             return d[0]
         })
-        .text(function (d, i) {
+        .text(function (d) {
             return d[0]
         })
     let country_select = document.getElementById("country-select")
@@ -41,7 +41,7 @@ function draw() {
     let county_name = $("#country-select").find('option:selected').text()
     $("#country-name-div").text(county_name)
     
-    google.charts.load('current', {'packages': ['corechart']});
+    
     google.charts.setOnLoadCallback(drawGenderBar);
     google.charts.setOnLoadCallback(drawGenderPie);
 
@@ -62,7 +62,7 @@ function draw() {
             startx += 5
             endx += 5
         }
-        console.log(url)
+        //console.log(url)
 
         $.ajax({
             url: "https://api.census.gov/data/timeseries/idb/5year",
@@ -70,13 +70,21 @@ function draw() {
                 get: "NAME" + url,
                 YR: "2021",
                 FIPS: country_id,
-                key: "dac13e19808c831211754f0e1e0ac27f45bddaaf"
+                key: "dac13e19808c831211754f0e1e0ac27f45bddaaf",
+                
+            },
+            beforeSend: function() {
+                $("#main-table").hide()
+                $("#loading").show(); // Show loading indicator before making the request
             }
         }).then((response) => {
             {
-                console.log(response)
+                $("#main-table").show()
+                $("#loading").hide();
+                //console.log(response)
                 let newstartx = 0
                 let newendx = 4
+                
 
                 let req_data = [['Age group', 'Male', 'Female']]
                 for (let i = 1; i <= 20; i++) {
@@ -113,13 +121,18 @@ function draw() {
                         textStyle: {
                             color: "white"
                         }
-                    }
+                    },
+                    chartArea: {
+                        backgroundColor: {
+                            fill: "black"
+                        },
+                    },
                 }
                 let dataTable = google.visualization.arrayToDataTable(req_data)
 
-                let chart = new google.visualization.ColumnChart(document.getElementById("chart"))
-                chart.draw(dataTable, options)
-                console.log(req_data)
+                let chart = new google.charts.Bar(document.getElementById("chart"))
+                chart.draw(dataTable, google.charts.Bar.convertOptions(options))
+                //console.log(req_data)
             }
         })
     }
@@ -132,10 +145,16 @@ function draw() {
                 get: "NAME,FPOP,MPOP",
                 YR: "2021",
                 FIPS: country_id,
-                key: "dac13e19808c831211754f0e1e0ac27f45bddaaf"
-            }
+                key: "dac13e19808c831211754f0e1e0ac27f45bddaaf",
+            },
+            beforeSend: function() {
+                $("#main-table").hide()
+                $("#loading").show()// Show loading indicator before making the request
+        }
         }).then((response) => {
             {
+                $("#main-table").show()
+                $("#loading").hide()
                 let arr = [["Gender", "Population"]]
                 arr.push(["Male", parseInt(response[1][2])])
                 arr.push(["Female", parseInt(response[1][1])])
