@@ -95,6 +95,7 @@ function draw() {
                 let options = {
                     title: "Population Distribution",
                     titleTextStyle: {
+                        font: "none",
                         color: "white",
                         fontSize: 30
                     },
@@ -119,6 +120,7 @@ function draw() {
                     },
                     hAxis: {
                         textStyle: {
+                            
                             color: "white"
                         }
                     },
@@ -130,8 +132,10 @@ function draw() {
                 }
                 let dataTable = google.visualization.arrayToDataTable(req_data)
 
-                let chart = new google.charts.Bar(document.getElementById("chart"))
-                chart.draw(dataTable, google.charts.Bar.convertOptions(options))
+                // let chart = new google.charts.Bar(document.getElementById("chart"))
+                // chart.draw(dataTable, google.charts.Bar.convertOptions(options))
+                let chart = new google.visualization.ColumnChart(document.getElementById("chart"))
+                chart.draw(dataTable, options)
                 //console.log(req_data)
             }
         })
@@ -162,6 +166,7 @@ function draw() {
                 let dataTable = google.visualization.arrayToDataTable(arr)
 
                 let options = {
+                    
                     title: "PopDist",
                     titleTextStyle: {
                         color: "white",
@@ -175,16 +180,23 @@ function draw() {
                     },
                     // height: 500,
                     // width: 500,
-                    pieHole: 0.7,
+                    pieHole: 0.85,
                     legend: {position: "bottom",
                         textStyle: {
-                        color: "white"
+                        color: "#FFFFFF"
                         }
                     },
                     backgroundColor: {
                         fill: "#000000",
                         fillOpacity: "0"
                     },
+                    // pieSliceText: "none",
+                    // pieSliceBorderColor: "black",
+                    pieStartAngle: "180",
+                    // slices: {
+                    //     1: {offset: 0, border: {color:"red"}}
+                    // }
+                    
                 }
 
                 let chart2 = new google.visualization.PieChart(document.getElementById("chart2"))
