@@ -1,3 +1,5 @@
+
+
 $.ajax({
     url: "https://api.census.gov/data/timeseries/idb/5year",
     data: {
@@ -44,6 +46,17 @@ function draw() {
     
     google.charts.setOnLoadCallback(drawGenderBar);
     google.charts.setOnLoadCallback(drawGenderPie);
+
+    let isStacked = false
+    
+    $("#stack-button").click(()=> {
+        isStacked = !isStacked
+        //console.log(isStacked)
+        google.charts.setOnLoadCallback(drawGenderBar);
+    })
+    
+    
+    
 
     function drawGenderBar() {
         let url = ""
@@ -92,6 +105,15 @@ function draw() {
                     newstartx += 5
                     newendx += 5
                 }
+
+                if(isStacked) {
+                    $("#stack-button").text("Unstack")
+                }
+                else {
+                    $("#stack-button").text("Stack")
+                }
+                
+                
                 let options = {
                     title: "Population Distribution",
                     titleTextStyle: {
@@ -115,12 +137,11 @@ function draw() {
                     },
                     vAxis: {
                         textStyle: {
-                            color: "white"
+                            color: "white",
                         }
                     },
                     hAxis: {
                         textStyle: {
-                            
                             color: "white"
                         }
                     },
@@ -129,13 +150,20 @@ function draw() {
                             fill: "black"
                         },
                     },
-                }
-                let dataTable = google.visualization.arrayToDataTable(req_data)
+                    isStacked: isStacked
 
-                // let chart = new google.charts.Bar(document.getElementById("chart"))
-                // chart.draw(dataTable, google.charts.Bar.convertOptions(options))
-                let chart = new google.visualization.ColumnChart(document.getElementById("chart"))
-                chart.draw(dataTable, options)
+                }
+                
+                let dataTable = google.visualization.arrayToDataTable(req_data)
+                
+                
+
+                
+                
+                let chart = new google.charts.Bar(document.getElementById("chart"))
+                chart.draw(dataTable, google.charts.Bar.convertOptions(options))
+                // let chart = new google.visualization.ColumnChart(document.getElementById("chart"))
+                // chart.draw(dataTable, options)
                 //console.log(req_data)
             }
         })
@@ -164,7 +192,7 @@ function draw() {
                 arr.push(["Female", parseInt(response[1][1])])
 
                 let dataTable = google.visualization.arrayToDataTable(arr)
-
+                
                 let options = {
                     
                     title: "PopDist",
@@ -198,6 +226,8 @@ function draw() {
                     // }
                     
                 }
+                
+                
 
                 let chart2 = new google.visualization.PieChart(document.getElementById("chart2"))
                 
